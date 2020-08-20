@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 var axios = require('axios')
 axios.defaults.baseURL = 'http://localhost:8443/api'
 Vue.prototype.$axios = axios
+axios.defaults.withCredentials = true
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
@@ -15,7 +16,18 @@ Vue.use(ElementUI)
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
       if (store.state.user.username) {
-        next()
+        axios.get('/authentication').then(resp => {
+          if (resp.data){
+            next()
+          } else {
+            next({
+              path: "login",
+              query: {
+                redirect: to.fullPath
+              }
+            })
+          }
+        })
       } else {
         next({
           path: 'login',

@@ -4,6 +4,9 @@ import com.evan.wj.dao.UserDAO;
 import com.evan.wj.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
+
 @Service
 public class UserService {
     @Autowired
@@ -24,5 +27,14 @@ public class UserService {
 
     public void add(User user) {
         userDAO.save(user);
+    }
+
+    public User getUserByUsername(String username) {
+        return userDAO.findByUsername(username);
+    }
+
+
+    public User findByUsername(String username) {
+        return userDAO.findByUsername(username);
     }
 }
